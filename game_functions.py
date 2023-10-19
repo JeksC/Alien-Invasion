@@ -82,6 +82,7 @@ def create_fleet(ai_settings, screen, ship, aliens):
     number_aliens_x = get_number_aliens_x(ai_settings, alien.rect.width)
     number_rows = get_rows(ai_settings, ship.rect.height, alien.rect.height)
 
+    # Create fleet of aliens
     for row_number in range(number_rows):
         for alien_number in range(number_aliens_x):
             create_alien(ai_settings, screen, aliens, alien_number, row_number)
@@ -102,8 +103,31 @@ def get_rows(ai_settings, ship_height, alien_height):
     return number_rows
 
 def create_alien(ai_settings, screen, aliens, alien_number, row_number):
+    """Create singular alien"""
     alien = Alien(ai_settings, screen)
     alien_width = alien.rect.width
     alien.rect.x = alien_width + 2 * alien_width * alien_number
     alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number 
     aliens.add(alien)
+
+def update_aliens(ai_settings, aliens):
+    """
+    Check if fleet is at an edge, then
+        Update position of all aliens in the fleet.
+    """
+    check_fleet_edges(ai_settings, aliens)
+    aliens.update()
+
+def check_fleet_edges(ai_settings, aliens):
+    """Respond appropriately if any aliens have reached an edge."""
+    for alien in aliens.sprites():
+        if alien.check_edges():
+            change_fleet_direction(ai_settings,aliens)
+            break
+
+def change_fleet_direction(ai_settings, aliens):
+    """Drop the entire fleet and change the fleet's direction"""
+    for alien in aliens.sprites():
+        alien.rect.y += ai_settings.fleet_drop_speed
+    ai_settings.fleet_direction *= -1
+
