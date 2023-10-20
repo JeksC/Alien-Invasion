@@ -137,7 +137,7 @@ def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
         stats.game_active = False
 
 def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
-    functions.py """Check if any aliens have reached the bottom of the screen."""
+    """Check if any aliens have reached the bottom of the screen."""
     screen_rect = screen.get_rect()
     for alien in aliens.sprites():
         if alien.rect.bottom >= screen_rect.bottom:
