@@ -113,9 +113,9 @@ def create_fleet(ai_settings, screen, ship, aliens):
     """Create full fleet of aliens"""
     # Create an alien and find the number of aliens in a row.
     # Spacing between each alien is equal to one alien width.
-    alien = Alien(ai_settings, screen)
+    alien = Alien(ai_settings, screen)  
     number_aliens_x = get_number_aliens_x(ai_settings, alien.rect.width)
-    number_rows = get_rows(ai_settings, ship.rect.height, alien.rect.height)
+    number_rows = get_number_rows(ai_settings, ship.rect.height, alien.rect.height)
 
     # Create fleet of aliens
     for row_number in range(number_rows):
@@ -130,7 +130,7 @@ def get_number_aliens_x(ai_settings, alien_width):
     number_aliens_x = int(available_space_x / ( 2 * alien_width))
     return number_aliens_x
 
-def get_rows(ai_settings, ship_height, alien_height):
+def get_number_rows(ai_settings, ship_height, alien_height):
     """Determine the number of aliens that can fit in a row"""
     available_space_y = (ai_settings.screen_height -
         (3 * alien_height) - ship_height)
@@ -220,3 +220,10 @@ def check_bullet_alien_collisions(ai_settings, screen,stats, sb,  ship, aliens, 
         for aliens in collisions.values():
             stats.score += ai_settings.alien_points * len(aliens)
             sb.prep_score()
+        check_high_score(stats, sb)
+
+def check_high_score(stats,sb):
+    """Check to see if there's a new high score."""
+    if stats.score > stats.high_score:
+        stats.high_score = stats.score
+        sb.prep_high_score()
